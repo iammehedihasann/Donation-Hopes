@@ -1,0 +1,7 @@
+# Railway — সার্ভিস Root Directory: backend
+[build]
+builder = "NIXPACKS"
+buildCommand = "npm ci && npm run build"
+
+[deploy]
+startCommand = "npm start"
