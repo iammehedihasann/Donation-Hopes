@@ -14,6 +14,13 @@ export const getTransparency = asyncHandler(async (_req: Request, res: Response)
     FundUsage.find().sort({ usageDate: -1 }).limit(30).lean(),
   ]);
 
+  const donorAgg = await Donation.aggregate([
+    { $match: { campaignId: { $in: campaigns.map((c) => c._id) } } },
+    { $group: { _id: "$campaignId", donors: { $addToSet: "$userId" } } },
+    { $project: { count: { $size: "$donors" } } },
+  ]);
+  const donorCountByCampaign = new Map(donorAgg.map((r) => [String(r._id), r.count as number]));
+
   const totalDonations = donationAgg[0]?.total ?? 0;
   const totalFundUsage = fundAgg[0]?.total ?? 0;
   const totalSavingsHeld = savingsAgg[0]?.total ?? 0;
@@ -29,6 +36,7 @@ export const getTransparency = asyncHandler(async (_req: Request, res: Response)
         title: c.title,
         goalAmount: c.goalAmount,
         collectedAmount: c.collectedAmount,
+        donorCount: donorCountByCampaign.get(String(c._id)) ?? 0,
         progress:
           c.goalAmount > 0 ? Math.min(100, Math.round((c.collectedAmount / c.goalAmount) * 100)) : 0,
       })),

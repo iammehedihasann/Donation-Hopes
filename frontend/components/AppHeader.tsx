@@ -2,8 +2,10 @@
 
 import { Button } from "@/components/ui/Button";
 import { useAuthHydrated } from "@/hooks/useAuthHydrated";
+import { useTranslation } from "@/hooks/useTranslation";
 import { useAuthStore } from "@/store/authStore";
-import { Heart, LayoutDashboard, LogIn, LogOut, Shield, Wallet } from "lucide-react";
+import { usePreferencesStore } from "@/store/preferencesStore";
+import { Heart, Languages, LayoutDashboard, LogIn, LogOut, Moon, Shield, Sun, User, Wallet } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -16,6 +18,11 @@ export function AppHeader() {
   const user = useAuthStore((s) => s.user);
   const token = useAuthStore((s) => s.token);
   const logout = useAuthStore((s) => s.logout);
+  const { t } = useTranslation();
+  const language = usePreferencesStore((s) => s.language);
+  const toggleLanguage = usePreferencesStore((s) => s.toggleLanguage);
+  const theme = usePreferencesStore((s) => s.theme);
+  const toggleTheme = usePreferencesStore((s) => s.toggleTheme);
 
   const isAuthed = Boolean(hydrated && token && user);
   const isAdmin = user?.role === "ADMIN";
@@ -28,16 +35,42 @@ export function AppHeader() {
           className="flex items-center gap-2 rounded-xl font-semibold text-emerald-800 dark:text-emerald-400"
         >
           <Heart className="h-6 w-6 fill-emerald-600 text-emerald-600" aria-hidden />
-          <span>Hopes</span>
+          <span>{t("app.name")}</span>
         </Link>
 
         <nav className="flex flex-wrap items-center gap-1">
           <Link href="/campaigns" className={linkCls}>
-            ক্যাম্পেইন
+            {t("nav.campaigns")}
           </Link>
           <Link href="/transparency" className={linkCls}>
-            স্বচ্ছতা
+            {t("nav.transparency")}
           </Link>
+
+          <button
+            type="button"
+            className={linkCls}
+            onClick={toggleLanguage}
+            aria-label={t("nav.language")}
+            title={t("nav.language")}
+          >
+            <span className="inline-flex items-center gap-1">
+              <Languages className="h-4 w-4" aria-hidden />
+              {language.toUpperCase()}
+            </span>
+          </button>
+
+          <button
+            type="button"
+            className={linkCls}
+            onClick={toggleTheme}
+            aria-label={t("nav.theme")}
+            title={t("nav.theme")}
+          >
+            <span className="inline-flex items-center gap-1">
+              {theme === "dark" ? <Sun className="h-4 w-4" aria-hidden /> : <Moon className="h-4 w-4" aria-hidden />}
+              {theme === "dark" ? t("nav.light") : t("nav.dark")}
+            </span>
+          </button>
 
           {!hydrated ? null : isAuthed ? (
             <>
@@ -45,7 +78,7 @@ export function AppHeader() {
                 <Link href="/admin" className={linkCls}>
                   <span className="inline-flex items-center gap-1">
                     <Shield className="h-4 w-4" aria-hidden />
-                    অ্যাডমিন
+                    {t("nav.admin")}
                   </span>
                 </Link>
               ) : null}
@@ -53,7 +86,7 @@ export function AppHeader() {
                 <Link href="/dashboard" className={linkCls}>
                   <span className="inline-flex items-center gap-1">
                     <LayoutDashboard className="h-4 w-4" aria-hidden />
-                    ড্যাশবোর্ড
+                    {t("nav.dashboard")}
                   </span>
                 </Link>
               ) : null}
@@ -61,7 +94,15 @@ export function AppHeader() {
                 <Link href="/dashboard/deposit" className={linkCls}>
                   <span className="inline-flex items-center gap-1">
                     <Wallet className="h-4 w-4" aria-hidden />
-                    টাকা জমা
+                    {t("nav.deposit")}
+                  </span>
+                </Link>
+              ) : null}
+              {!isAdmin ? (
+                <Link href="/dashboard/profile" className={linkCls}>
+                  <span className="inline-flex items-center gap-1">
+                    <User className="h-4 w-4" aria-hidden />
+                    {t("profile.title")}
                   </span>
                 </Link>
               ) : null}
@@ -77,7 +118,7 @@ export function AppHeader() {
                   }
                 }}
               >
-                লগআউট
+                {t("nav.logout")}
               </Button>
             </>
           ) : (
@@ -86,7 +127,7 @@ export function AppHeader() {
               className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2 text-sm font-medium text-white shadow-md hover:bg-emerald-700"
             >
               <LogIn className="h-4 w-4" aria-hidden />
-              লগইন করুন
+              {t("nav.login")}
             </Link>
           )}
         </nav>

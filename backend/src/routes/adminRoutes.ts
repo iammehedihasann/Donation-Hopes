@@ -5,6 +5,7 @@ import { validateBody } from "../middleware/validate";
 import {
   adminReviewPaymentSchema,
   adminReviewWithdrawSchema,
+  adminUserActionSchema,
   campaignCreateSchema,
   campaignUpdateSchema,
   fundUsageSchema,
@@ -16,6 +17,8 @@ adminRouter.use(requireAuth, requireRole("ADMIN"));
 
 adminRouter.get("/stats", admin.getStats);
 adminRouter.get("/users", admin.listUsers);
+adminRouter.get("/users/:id", admin.getUserDetails);
+adminRouter.post("/users/:id/action", validateBody(adminUserActionSchema), admin.userAction);
 adminRouter.get("/donations", admin.listAllDonations);
 
 adminRouter.get("/payments/pending", admin.listPendingPayments);

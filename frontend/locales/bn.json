@@ -1,0 +1,158 @@
+{
+  "app": {
+    "name": "Hopes"
+  },
+  "nav": {
+    "campaigns": "ক্যাম্পেইন",
+    "transparency": "স্বচ্ছতা",
+    "admin": "অ্যাডমিন",
+    "dashboard": "ড্যাশবোর্ড",
+    "deposit": "টাকা জমা",
+    "login": "লগইন করুন",
+    "logout": "লগআউট",
+    "language": "ভাষা",
+    "theme": "থিম",
+    "light": "লাইট",
+    "dark": "ডার্ক"
+  },
+  "common": {
+    "loading": "লোড হচ্ছে…",
+    "tryAgain": "আবার চেষ্টা করুন",
+    "back": "ফিরে যান",
+    "confirm": "নিশ্চিত করুন",
+    "close": "বন্ধ করুন"
+  },
+  "home": {
+    "heroTitle": "দান ও সঞ্চয় — সহজ, স্বচ্ছ, মোবাইল-ফ্রেন্ডলি",
+    "heroDesc": "গ্রামের মানুষের জন্য বাংলায় সরল ইন্টারফেস। আপনার ওয়ালেটে টাকা জমা করুন, ক্যাম্পেইনে দান করুন, সব হিসাব এক জায়গায় দেখুন।",
+    "newAccount": "নতুন অ্যাকাউন্ট",
+    "viewCampaigns": "ক্যাম্পেইন দেখুন",
+    "savingTitle": "সঞ্চয়",
+    "savingDesc": "বিকাশ, নগদ, রকেট মক পেমেন্টের স্ক্রিনশট জমা দিন। অ্যাডমিন যাচাই করলে ব্যালেন্স যুক্ত হবে।",
+    "donateTitle": "দান",
+    "donateDesc": "সক্রিয় ক্যাম্পেইন বেছে নিয়ে ওয়ালেট থেকে সরাসরি দান করুন।",
+    "transparencyTitle": "স্বচ্ছতা",
+    "transparencyDesc": "মোট দান, ক্যাম্পেইন অগ্রগতি ও তহবিল ব্যবহারের রেকর্ড সবার জন্য উন্মুক্ত।",
+    "viewTransparency": "স্বচ্ছতা পেজ দেখুন"
+  },
+  "auth": {
+    "loginTitle": "লগইন করুন",
+    "loginHint": "ইমেইল অথবা ফোন + OTP দিয়ে প্রবেশ করুন।",
+    "phoneTab": "ফোন",
+    "emailTab": "ইমেইল",
+    "email": "ইমেইল",
+    "password": "পাসওয়ার্ড",
+    "mobileNumber": "মোবাইল নম্বর",
+    "sendOtp": "OTP পাঠান",
+    "otp": "OTP",
+    "verify": "যাচাই করুন",
+    "changeNumber": "নম্বর পরিবর্তন",
+    "noAccount": "অ্যাকাউন্ট নেই?",
+    "register": "নিবন্ধন করুন",
+    "registerTitle": "নিবন্ধন করুন",
+    "registerHint": "নাম, ফোন ও পাসওয়ার্ড দিন। ইমেইল ঐচ্ছিক।",
+    "name": "নাম",
+    "emailOptional": "ইমেইল (ঐচ্ছিক — ইমেইল লগইনের জন্য)",
+    "passwordMin": "পাসওয়ার্ড",
+    "createAccount": "অ্যাকাউন্ট খুলুন",
+    "haveAccount": "ইতিমধ্যে অ্যাকাউন্ট আছে?",
+    "loginLink": "লগইন করুন",
+    "loginSuccess": "লগইন সফল",
+    "otpSentMock": "OTP পাঠানো হয়েছে (মক)",
+    "errorGeneric": "ত্রুটি"
+  },
+  "profile": {
+    "title": "প্রোফাইল",
+    "edit": "সম্পাদনা",
+    "save": "সংরক্ষণ",
+    "walletBalance": "ওয়ালেট ব্যালেন্স",
+    "totalDonation": "মোট দান",
+    "donationCount": "দান সংখ্যা",
+    "changePasswordTitle": "পাসওয়ার্ড পরিবর্তন",
+    "currentPassword": "বর্তমান পাসওয়ার্ড",
+    "newPassword": "নতুন পাসওয়ার্ড",
+    "updatePassword": "আপডেট করুন"
+  },
+  "admin": {
+    "usersTitle": "ব্যবহারকারী ব্যবস্থাপনা",
+    "totalUsers": "মোট",
+    "activeUsers": "সক্রিয় ব্যবহারকারী",
+    "deletedUsers": "ডিলিটেড (soft) ব্যবহারকারী",
+    "suspend": "স্থগিত",
+    "activate": "সক্রিয়",
+    "softDelete": "ডিলিট (soft)",
+    "userDetailsTitle": "ব্যবহারকারী বিস্তারিত",
+    "transactionCount": "লেনদেন সংখ্যা"
+  },
+  "tx": {
+    "filterAll": "সব",
+    "filterDeposit": "জমা",
+    "filterWithdraw": "উত্তোলন",
+    "filterDonate": "দান",
+    "empty": "কোনো লেনদেন নেই।",
+    "type": {
+      "deposit": "জমা",
+      "withdraw": "উত্তোলন",
+      "donate": "দান"
+    },
+    "status": {
+      "pending": "অপেক্ষমান",
+      "completed": "সম্পন্ন",
+      "rejected": "বাতিল",
+      "failed": "ব্যর্থ"
+    }
+  },
+  "campaign": {
+    "donate": "দান করুন",
+    "loginToDonate": "দান করতে লগইন করুন",
+    "invalidAmount": "সঠিক পরিমাণ দিন",
+    "donationSuccess": "দান সফল হয়েছে। ধন্যবাদ!",
+    "closed": "এই ক্যাম্পেইন বন্ধ আছে।",
+    "collected": "সংগৃহীত",
+    "goal": "লক্ষ্য",
+    "amount": "পরিমাণ (৳)",
+    "donorCount": "দাতা: {{count}} জন",
+    "updatesTitle": "ক্যাম্পেইন আপডেট",
+    "viewImage": "ছবি দেখুন"
+  },
+  "deposit": {
+    "title": "টাকা জমা দিন (মক পেমেন্ট)",
+    "hint": "বিকাশ / নগদ / রকেট থেকে পাঠানোর পর স্ক্রিনশট আপলোড করুন। অ্যাডমিন যাচাই করলে ব্যালেন্স যুক্ত হবে।",
+    "method": "পদ্ধতি",
+    "amount": "পরিমাণ (৳)",
+    "screenshot": "স্ক্রিনশট",
+    "chooseImage": "ছবি বেছে নিন",
+    "submit": "জমা দিন",
+    "mySubmissions": "আমার জমার অনুরোধ",
+    "viewImage": "ছবি দেখুন",
+    "pickScreenshot": "স্ক্রিনশট নির্বাচন করুন",
+    "uploadFailed": "আপলোড ব্যর্থ",
+    "invalidAmount": "সঠিক পরিমাণ দিন"
+  },
+  "adminHome": {
+    "title": "অ্যাডমিন ড্যাশবোর্ড",
+    "users": "মোট ব্যবহারকারী",
+    "totalDonations": "মোট দান",
+    "walletSavings": "ওয়ালেটে সঞ্চয়",
+    "collected": "ক্যাম্পেইনে সংগৃহীত",
+    "manageUsers": "ব্যবহারকারী",
+    "payments": "পেমেন্ট যাচাই",
+    "withdrawals": "উত্তোলন অনুরোধ",
+    "campaigns": "ক্যাম্পেইন ব্যবস্থাপনা",
+    "fundUsage": "তহবিল ব্যবহার রেকর্ড",
+    "publicTransparency": "স্বচ্ছতা পেজ (পাবলিক)"
+    ,
+    "pendingWithdrawals": "অপেক্ষমান উত্তোলন",
+    "pendingPayments": "অপেক্ষমান পেমেন্ট"
+  },
+  "transparency": {
+    "title": "স্বচ্ছতা — হিসাব জনসমক্ষে",
+    "totalDonations": "মোট দান (নিবন্ধিত লেনদেন)",
+    "walletSavings": "ব্যবহারকারী ওয়ালেটে মোট সঞ্চয়",
+    "fundUsage": "ঘোষিত তহবিল ব্যবহার",
+    "campaignProgress": "ক্যাম্পেইন অগ্রগতি",
+    "fundUsageDetails": "তহবিল ব্যবহারের বিবরণ",
+    "noFundUsage": "এখনও কোনো রেকর্ড যুক্ত হয়নি।"
+  }
+}
+

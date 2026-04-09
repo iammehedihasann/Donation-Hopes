@@ -1,4 +1,5 @@
 import { AppHeader } from "@/components/AppHeader";
+import { ClientPreferencesSync } from "@/components/ClientPreferencesSync";
 import { NotifyHost } from "@/components/NotifyHost";
 import type { Metadata } from "next";
 import { Geist_Mono, Noto_Sans_Bengali } from "next/font/google";
@@ -28,6 +29,7 @@ export default function RootLayout({
   return (
     <html lang="bn" className={`${bengali.variable} ${geistMono.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-zinc-50 font-sans text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50">
+        <ClientPreferencesSync />
         <NotifyHost />
         <AppHeader />
         <main className="flex-1">{children}</main>

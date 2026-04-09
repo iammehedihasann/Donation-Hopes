@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/Button";
 import { Card, CardTitle } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
+import { useTranslation } from "@/hooks/useTranslation";
 import { apiRequest } from "@/services/api";
 import type { AuthUser } from "@/store/authStore";
 import { useAuthStore } from "@/store/authStore";
@@ -15,6 +16,7 @@ import { useState } from "react";
 export default function RegisterPage() {
   const router = useRouter();
   const setAuth = useAuthStore((s) => s.setAuth);
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -33,10 +35,10 @@ export default function RegisterPage() {
         skipAuth: true,
       });
       setAuth(data.token, data.user);
-      notify.success("নিবন্ধন সফল");
+      notify.success(t("auth.registerTitle"));
       router.replace("/dashboard");
     } catch (err) {
-      notify.error(err instanceof Error ? err.message : "ত্রটি");
+      notify.error(err instanceof Error ? err.message : t("auth.errorGeneric"));
     } finally {
       setLoading(false);
     }
@@ -45,21 +47,21 @@ export default function RegisterPage() {
   return (
     <div className="mx-auto max-w-md p-4 py-10 sm:p-6">
       <Card>
-        <CardTitle>নিবন্ধন করুন</CardTitle>
-        <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">নাম, ফোন ও পাসওয়ার্ড দিন। ইমেইল ঐচ্ছিক।</p>
+        <CardTitle>{t("auth.registerTitle")}</CardTitle>
+        <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{t("auth.registerHint")}</p>
 
         <form className="mt-6 space-y-4" onSubmit={onSubmit}>
-          <Input label="নাম" name="name" value={name} onChange={(e) => setName(e.target.value)} required />
-          <Input label="মোবাইল নম্বর" name="phone" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} required />
+          <Input label={t("auth.name")} name="name" value={name} onChange={(e) => setName(e.target.value)} required />
+          <Input label={t("auth.mobileNumber")} name="phone" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} required />
           <Input
-            label="ইমেইল (ঐচ্ছিক — ইমেইল লগইনের জন্য)"
+            label={t("auth.emailOptional")}
             name="email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <Input
-            label="পাসওয়ার্ড"
+            label={t("auth.passwordMin")}
             name="password"
             type="password"
             value={password}
@@ -73,14 +75,14 @@ export default function RegisterPage() {
             disabled={loading}
             leftIcon={loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UserPlus className="h-4 w-4" />}
           >
-            অ্যাকাউন্ট খুলুন
+            {t("auth.createAccount")}
           </Button>
         </form>
 
         <p className="mt-6 text-center text-sm text-zinc-600">
-          ইতিমধ্যে অ্যাকাউন্ট আছে?{" "}
+          {t("auth.haveAccount")}{" "}
           <Link href="/login" className="font-medium text-emerald-700 hover:underline dark:text-emerald-400">
-            লগইন করুন
+            {t("auth.loginLink")}
           </Link>
         </p>
       </Card>

@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/Button";
 import { Card, CardTitle } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
+import { useTranslation } from "@/hooks/useTranslation";
 import { apiRequest } from "@/services/api";
 import type { AuthUser } from "@/store/authStore";
 import { useAuthStore } from "@/store/authStore";
@@ -17,6 +18,7 @@ type Tab = "email" | "phone";
 export default function LoginPage() {
   const router = useRouter();
   const setAuth = useAuthStore((s) => s.setAuth);
+  const { t } = useTranslation();
   const [tab, setTab] = useState<Tab>("phone");
   const [loading, setLoading] = useState(false);
 
@@ -38,7 +40,7 @@ export default function LoginPage() {
         skipAuth: true,
       });
       setAuth(data.token, data.user);
-      notify.success("লগইন সফল");
+      notify.success(t("auth.loginSuccess"));
       router.replace(data.user.role === "ADMIN" ? "/admin" : "/dashboard");
     } catch (err) {
       notify.error(err instanceof Error ? err.message : "ত্রটি");
@@ -58,7 +60,7 @@ export default function LoginPage() {
       });
       setOtpSent(true);
       setDevOtp(data?.devOtp ?? null);
-      notify.success("OTP পাঠানো হয়েছে (মক)");
+      notify.success(t("auth.otpSentMock"));
     } catch (err) {
       notify.error(err instanceof Error ? err.message : "ত্রটি");
     } finally {
@@ -76,10 +78,10 @@ export default function LoginPage() {
         skipAuth: true,
       });
       setAuth(data.token, data.user);
-      notify.success("লগইন সফল");
+      notify.success(t("auth.loginSuccess"));
       router.replace(data.user.role === "ADMIN" ? "/admin" : "/dashboard");
     } catch (err) {
-      notify.error(err instanceof Error ? err.message : "ত্রটি");
+      notify.error(err instanceof Error ? err.message : t("auth.errorGeneric"));
     } finally {
       setLoading(false);
     }
@@ -88,9 +90,9 @@ export default function LoginPage() {
   return (
     <div className="mx-auto max-w-md p-4 py-10 sm:p-6">
       <Card>
-        <CardTitle>লগইন করুন</CardTitle>
+        <CardTitle>{t("auth.loginTitle")}</CardTitle>
         <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-          ইমেইল অথবা ফোন + OTP দিয়ে প্রবেশ করুন।
+          {t("auth.loginHint")}
         </p>
 
         <div className="mt-4 flex gap-2 rounded-xl bg-zinc-100 p-1 dark:bg-zinc-800">
@@ -102,7 +104,7 @@ export default function LoginPage() {
             onClick={() => setTab("phone")}
           >
             <Smartphone className="h-4 w-4" aria-hidden />
-            ফোন
+            {t("auth.phoneTab")}
           </button>
           <button
             type="button"
@@ -112,15 +114,15 @@ export default function LoginPage() {
             onClick={() => setTab("email")}
           >
             <Mail className="h-4 w-4" aria-hidden />
-            ইমেইল
+            {t("auth.emailTab")}
           </button>
         </div>
 
         {tab === "email" ? (
           <form className="mt-6 space-y-4" onSubmit={onEmailLogin}>
-            <Input label="ইমেইল" name="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <Input label={t("auth.email")} name="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
             <Input
-              label="পাসওয়ার্ড"
+              label={t("auth.password")}
               name="password"
               type="password"
               value={password}
@@ -128,7 +130,7 @@ export default function LoginPage() {
               required
             />
             <Button type="submit" className="w-full" disabled={loading} leftIcon={loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Mail className="h-4 w-4" />}>
-              লগইন করুন
+              {t("auth.loginTitle")}
             </Button>
           </form>
         ) : (
@@ -136,7 +138,7 @@ export default function LoginPage() {
             {!otpSent ? (
               <form className="space-y-4" onSubmit={onSendOtp}>
                 <Input
-                  label="মোবাইল নম্বর"
+                  label={t("auth.mobileNumber")}
                   name="phone"
                   type="tel"
                   value={phone}
@@ -151,7 +153,7 @@ export default function LoginPage() {
                     loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Smartphone className="h-4 w-4" />
                   }
                 >
-                  OTP পাঠান
+                  {t("auth.sendOtp")}
                 </Button>
               </form>
             ) : (
@@ -168,7 +170,7 @@ export default function LoginPage() {
                   disabled={loading}
                   leftIcon={loading ? <Loader2 className="h-4 w-4 animate-spin" /> : undefined}
                 >
-                  যাচাই করুন
+                  {t("auth.verify")}
                 </Button>
                 <button
                   type="button"
@@ -179,7 +181,7 @@ export default function LoginPage() {
                     setDevOtp(null);
                   }}
                 >
-                  নম্বর পরিবর্তন
+                  {t("auth.changeNumber")}
                 </button>
               </form>
             )}
@@ -187,9 +189,9 @@ export default function LoginPage() {
         )}
 
         <p className="mt-6 text-center text-sm text-zinc-600">
-          অ্যাকাউন্ট নেই?{" "}
+          {t("auth.noAccount")}{" "}
           <Link href="/register" className="font-medium text-emerald-700 hover:underline dark:text-emerald-400">
-            নিবন্ধন করুন
+            {t("auth.register")}
           </Link>
         </p>
       </Card>

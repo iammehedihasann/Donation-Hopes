@@ -32,6 +32,15 @@ export const updateProfileSchema = z.object({
     .transform((v) => (v === "" || v === undefined ? undefined : v)),
 });
 
+export const changePasswordSchema = z.object({
+  currentPassword: z.string().min(1, "বর্তমান পাসওয়ার্ড দিন"),
+  newPassword: z.string().min(6, "নতুন পাসওয়ার্ড কমপক্ষে ৬ অক্ষর"),
+});
+
+export const adminUserActionSchema = z.object({
+  action: z.enum(["suspend", "activate", "soft_delete"]),
+});
+
 export const withdrawRequestSchema = z.object({
   amount: z.coerce.number().positive("পরিমাণ ০ এর বেশি হতে হবে"),
 });

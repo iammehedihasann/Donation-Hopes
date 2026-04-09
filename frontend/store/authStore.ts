@@ -7,6 +7,7 @@ export type AuthUser = {
   phone: string;
   email?: string;
   role: "ADMIN" | "USER";
+  status?: "active" | "suspended";
 };
 
 type AuthState = {

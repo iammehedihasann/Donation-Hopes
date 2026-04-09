@@ -5,7 +5,11 @@ import { asyncHandler } from "../utils/asyncHandler";
 export const listMyTransactions = asyncHandler(async (req: Request, res: Response) => {
   const userId = req.authUser!.id;
   const limit = Math.min(Number(req.query.limit) || 50, 100);
-  const items = await Transaction.find({ userId })
+  const type = typeof req.query.type === "string" ? req.query.type : undefined;
+  const query: Record<string, unknown> = { userId };
+  if (type && ["deposit", "withdraw", "donate"].includes(type)) query.type = type;
+
+  const items = await Transaction.find(query)
     .sort({ createdAt: -1 })
     .limit(limit)
     .lean();

@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import mongoose from "mongoose";
+import { User } from "../models/User";
 import { Wallet } from "../models/Wallet";
 import { WithdrawRequest } from "../models/WithdrawRequest";
 import { AppError } from "../utils/AppError";
@@ -22,6 +23,11 @@ export const createWithdrawRequest = asyncHandler(async (req: Request, res: Resp
   const session = await mongoose.startSession();
   session.startTransaction();
   try {
+    // ensure user is active (backward-compatible safeguard)
+    const u = await User.findOne({ _id: userId, isDeleted: false }).select("status");
+    if (!u) throw new AppError("ব্যবহারকারী পাওয়া যায়নি", 404, "USER_NOT_FOUND");
+    if ((u as any).status === "suspended") throw new AppError("আপনার অ্যাকাউন্ট সাময়িকভাবে স্থগিত", 403, "SUSPENDED");
+
     const wallet = await Wallet.findOne({ userId }).session(session);
     if (!wallet) throw new AppError("ওয়ালেট পাওয়া যায়নি", 404, "WALLET_NOT_FOUND");
     if (wallet.balance < amount) throw new AppError("ব্যালেন্স অপর্যাপ্ত", 400, "INSUFFICIENT_BALANCE");

@@ -1,0 +1,158 @@
+{
+  "app": {
+    "name": "Hopes"
+  },
+  "nav": {
+    "campaigns": "Campaigns",
+    "transparency": "Transparency",
+    "admin": "Admin",
+    "dashboard": "Dashboard",
+    "deposit": "Deposit",
+    "login": "Log in",
+    "logout": "Log out",
+    "language": "Language",
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "common": {
+    "loading": "Loading…",
+    "tryAgain": "Try again",
+    "back": "Back",
+    "confirm": "Confirm",
+    "close": "Close"
+  },
+  "home": {
+    "heroTitle": "Donations & Savings — simple, transparent, mobile-first",
+    "heroDesc": "A simple Bengali-first experience for rural users. Add money to your wallet, donate to campaigns, and view everything in one place.",
+    "newAccount": "Create account",
+    "viewCampaigns": "View campaigns",
+    "savingTitle": "Savings",
+    "savingDesc": "Submit a mock payment screenshot via bKash, Nagad, or Rocket. Balance is added after admin verification.",
+    "donateTitle": "Donate",
+    "donateDesc": "Choose an active campaign and donate directly from your wallet.",
+    "transparencyTitle": "Transparency",
+    "transparencyDesc": "Total donations, campaign progress, and fund usage are publicly visible.",
+    "viewTransparency": "View transparency page"
+  },
+  "auth": {
+    "loginTitle": "Log in",
+    "loginHint": "Sign in using email or phone + OTP.",
+    "phoneTab": "Phone",
+    "emailTab": "Email",
+    "email": "Email",
+    "password": "Password",
+    "mobileNumber": "Mobile number",
+    "sendOtp": "Send OTP",
+    "otp": "OTP",
+    "verify": "Verify",
+    "changeNumber": "Change number",
+    "noAccount": "No account?",
+    "register": "Register",
+    "registerTitle": "Register",
+    "registerHint": "Enter your name, phone, and password. Email is optional.",
+    "name": "Name",
+    "emailOptional": "Email (optional — for email login)",
+    "passwordMin": "Password",
+    "createAccount": "Create account",
+    "haveAccount": "Already have an account?",
+    "loginLink": "Log in",
+    "loginSuccess": "Login successful",
+    "otpSentMock": "OTP sent (mock)",
+    "errorGeneric": "Error"
+  },
+  "profile": {
+    "title": "Profile",
+    "edit": "Edit",
+    "save": "Save",
+    "walletBalance": "Wallet balance",
+    "totalDonation": "Total donations",
+    "donationCount": "Donation count",
+    "changePasswordTitle": "Change password",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "updatePassword": "Update password"
+  },
+  "admin": {
+    "usersTitle": "User management",
+    "totalUsers": "Total",
+    "activeUsers": "Active users",
+    "deletedUsers": "Soft-deleted users",
+    "suspend": "Suspend",
+    "activate": "Activate",
+    "softDelete": "Soft delete",
+    "userDetailsTitle": "User details",
+    "transactionCount": "Transaction count"
+  },
+  "tx": {
+    "filterAll": "All",
+    "filterDeposit": "Deposit",
+    "filterWithdraw": "Withdraw",
+    "filterDonate": "Donate",
+    "empty": "No transactions yet.",
+    "type": {
+      "deposit": "Deposit",
+      "withdraw": "Withdraw",
+      "donate": "Donate"
+    },
+    "status": {
+      "pending": "Pending",
+      "completed": "Completed",
+      "rejected": "Rejected",
+      "failed": "Failed"
+    }
+  },
+  "campaign": {
+    "donate": "Donate",
+    "loginToDonate": "Log in to donate",
+    "invalidAmount": "Enter a valid amount",
+    "donationSuccess": "Donation successful. Thank you!",
+    "closed": "This campaign is closed.",
+    "collected": "Collected",
+    "goal": "Goal",
+    "amount": "Amount (BDT)",
+    "donorCount": "Donors: {{count}}",
+    "updatesTitle": "Campaign updates",
+    "viewImage": "View image"
+  },
+  "deposit": {
+    "title": "Deposit (mock payment)",
+    "hint": "Upload a payment screenshot for bKash / Nagad / Rocket. Balance is added after admin verification.",
+    "method": "Method",
+    "amount": "Amount (BDT)",
+    "screenshot": "Screenshot",
+    "chooseImage": "Choose image",
+    "submit": "Submit",
+    "mySubmissions": "My deposit submissions",
+    "viewImage": "View image",
+    "pickScreenshot": "Select a screenshot",
+    "uploadFailed": "Upload failed",
+    "invalidAmount": "Enter a valid amount"
+  },
+  "adminHome": {
+    "title": "Admin dashboard",
+    "users": "Total users",
+    "totalDonations": "Total donations",
+    "walletSavings": "Savings in wallets",
+    "collected": "Collected in campaigns",
+    "manageUsers": "Users",
+    "payments": "Payment verification",
+    "withdrawals": "Withdrawal requests",
+    "campaigns": "Campaign management",
+    "fundUsage": "Fund usage records",
+    "publicTransparency": "Transparency (public)"
+    ,
+    "pendingWithdrawals": "Pending withdrawals",
+    "pendingPayments": "Pending payments"
+  },
+  "transparency": {
+    "title": "Transparency — public accounting",
+    "totalDonations": "Total donations (recorded)",
+    "walletSavings": "Total savings in user wallets",
+    "fundUsage": "Reported fund usage",
+    "campaignProgress": "Campaign progress",
+    "fundUsageDetails": "Fund usage details",
+    "noFundUsage": "No records yet."
+  }
+}
+

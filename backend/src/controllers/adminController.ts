@@ -12,11 +12,13 @@ import { AppError } from "../utils/AppError";
 import { asyncHandler } from "../utils/asyncHandler";
 
 export const getStats = asyncHandler(async (_req: Request, res: Response) => {
-  const [userCount, donationAgg, savingsAgg, totalCampaignCollected] = await Promise.all([
-    User.countDocuments({ role: "USER" }),
+  const [userCount, donationAgg, savingsAgg, totalCampaignCollected, pendingWithdrawals, pendingPayments] = await Promise.all([
+    User.countDocuments({ role: "USER", isDeleted: false }),
     Donation.aggregate([{ $group: { _id: null, total: { $sum: "$amount" } } }]),
     Wallet.aggregate([{ $group: { _id: null, total: { $sum: "$balance" } } }]),
     Campaign.aggregate([{ $group: { _id: null, total: { $sum: "$collectedAmount" } } }]),
+    WithdrawRequest.countDocuments({ status: "pending" }),
+    PaymentSubmission.countDocuments({ status: "pending" }),
   ]);
 
   const totalDonations = donationAgg[0]?.total ?? 0;
@@ -30,12 +32,17 @@ export const getStats = asyncHandler(async (_req: Request, res: Response) => {
       totalDonationsAmount: totalDonations,
       totalSavingsInWallets,
       totalCollectedOnCampaigns: totalCollectedCampaigns,
+      pendingWithdrawals,
+      pendingPayments,
     },
   });
 });
 
 export const listUsers = asyncHandler(async (_req: Request, res: Response) => {
-  const users = await User.find().select("name phone email role createdAt").sort({ createdAt: -1 }).lean();
+  const users = await User.find()
+    .select("name phone email role status isDeleted createdAt")
+    .sort({ createdAt: -1 })
+    .lean();
   const wallets = await Wallet.find().lean();
   const balanceByUser = new Map(wallets.map((w) => [String(w.userId), w.balance]));
 
@@ -48,11 +55,72 @@ export const listUsers = asyncHandler(async (_req: Request, res: Response) => {
         phone: u.phone,
         email: u.email,
         role: u.role,
+        status: (u as any).status,
+        isDeleted: (u as any).isDeleted,
         balance: balanceByUser.get(String(u._id)) ?? 0,
         createdAt: u.createdAt,
       })),
     },
   });
+});
+
+export const getUserDetails = asyncHandler(async (req: Request, res: Response) => {
+  const id = String(req.params.id);
+  const user = await User.findById(id).select("name phone email role status isDeleted createdAt").lean();
+  if (!user) throw new AppError("ব্যবহারকারী পাওয়া যায়নি", 404, "USER_NOT_FOUND");
+
+  const [wallet, donationAgg, txCount] = await Promise.all([
+    Wallet.findOne({ userId: id }).lean(),
+    Donation.aggregate([
+      { $match: { userId: new mongoose.Types.ObjectId(id) } },
+      { $group: { _id: null, total: { $sum: "$amount" }, count: { $sum: 1 } } },
+    ]),
+    Transaction.countDocuments({ userId: id }),
+  ]);
+
+  res.json({
+    success: true,
+    data: {
+      user: {
+        id: String(user._id),
+        name: user.name,
+        phone: user.phone,
+        email: user.email,
+        role: user.role,
+        status: (user as any).status,
+        isDeleted: (user as any).isDeleted,
+        createdAt: user.createdAt,
+      },
+      walletBalance: wallet?.balance ?? 0,
+      totalDonation: donationAgg[0]?.total ?? 0,
+      donationCount: donationAgg[0]?.count ?? 0,
+      transactionCount: txCount,
+    },
+  });
+});
+
+export const userAction = asyncHandler(async (req: Request, res: Response) => {
+  const id = String(req.params.id);
+  const { action } = req.body as { action: "suspend" | "activate" | "soft_delete" };
+
+  const user = await User.findById(id);
+  if (!user) throw new AppError("ব্যবহারকারী পাওয়া যায়নি", 404, "USER_NOT_FOUND");
+
+  if (action === "soft_delete") {
+    user.isDeleted = true as any;
+    await user.save();
+    res.json({ success: true, message: "ব্যবহারকারী ডিলিট করা হয়েছে (soft)" });
+    return;
+  }
+  if (action === "suspend") {
+    (user as any).status = "suspended";
+    await user.save();
+    res.json({ success: true, message: "ব্যবহারকারী স্থগিত হয়েছে" });
+    return;
+  }
+  (user as any).status = "active";
+  await user.save();
+  res.json({ success: true, message: "ব্যবহারকারী সক্রিয় হয়েছে" });
 });
 
 export const listPendingPayments = asyncHandler(async (_req: Request, res: Response) => {

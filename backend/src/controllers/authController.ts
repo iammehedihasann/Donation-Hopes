@@ -27,11 +27,11 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
     email?: string;
   };
 
-  const existsPhone = await User.findOne({ phone });
+  const existsPhone = await User.findOne({ phone, isDeleted: false });
   if (existsPhone) throw new AppError("এই ফোন নম্বরে ইতিমধ্যে অ্যাকাউন্ট আছে", 409, "PHONE_EXISTS");
 
   if (email) {
-    const existsEmail = await User.findOne({ email });
+    const existsEmail = await User.findOne({ email, isDeleted: false });
     if (existsEmail) throw new AppError("এই ইমেইলে ইতিমধ্যে অ্যাকাউন্ট আছে", 409, "EMAIL_EXISTS");
   }
 
@@ -65,8 +65,9 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
 
 export const loginEmail = asyncHandler(async (req: Request, res: Response) => {
   const { email, password } = req.body as { email: string; password: string };
-  const user = await User.findOne({ email }).select("+password");
+  const user = await User.findOne({ email, isDeleted: false }).select("+password status");
   if (!user) throw new AppError("ইমেইল বা পাসওয়ার্ড ভুল", 401, "INVALID_CREDENTIALS");
+  if (user.status === "suspended") throw new AppError("আপনার অ্যাকাউন্ট সাময়িকভাবে স্থগিত", 403, "SUSPENDED");
 
   const ok = await bcrypt.compare(password, user.password);
   if (!ok) throw new AppError("ইমেইল বা পাসওয়ার্ড ভুল", 401, "INVALID_CREDENTIALS");
@@ -90,27 +91,29 @@ export const loginEmail = asyncHandler(async (req: Request, res: Response) => {
 
 export const sendPhoneOtp = asyncHandler(async (req: Request, res: Response) => {
   const { phone } = req.body as { phone: string };
-  const user = await User.findOne({ phone });
+  const user = await User.findOne({ phone, isDeleted: false }).select("status");
   if (!user) throw new AppError("এই নম্বরে কোনো অ্যাকাউন্ট নেই। আগে নিবন্ধন করুন।", 404, "USER_NOT_FOUND");
+  if (user.status === "suspended") throw new AppError("আপনার অ্যাকাউন্ট সাময়িকভাবে স্থগিত", 403, "SUSPENDED");
 
   const otp = process.env.MOCK_OTP_FIXED ?? String(Math.floor(100000 + Math.random() * 900000));
   setOtp(phone, otp);
 
-  if (process.env.NODE_ENV !== "production") {
-    console.log(`[OTP mock] ${phone} -> ${otp}`);
-  }
+  // মক OTP: ডেভে লগ + (ঐচ্ছিক) রেসপন্সে দেখানো
+  if (process.env.NODE_ENV !== "production") console.log(`[OTP mock] ${phone} -> ${otp}`);
+  const showOtpInResponse = process.env.SHOW_DEV_OTP_IN_RESPONSE === "true";
 
   res.json({
     success: true,
     message: "OTP পাঠানো হয়েছে (মক)",
-    data: process.env.NODE_ENV !== "production" ? { devOtp: otp } : {},
+    data: process.env.NODE_ENV !== "production" || showOtpInResponse ? { devOtp: otp } : {},
   });
 });
 
 export const verifyPhoneOtp = asyncHandler(async (req: Request, res: Response) => {
   const { phone, otp } = req.body as { phone: string; otp: string };
-  const user = await User.findOne({ phone });
+  const user = await User.findOne({ phone, isDeleted: false }).select("name phone email role status");
   if (!user) throw new AppError("ব্যবহারকারী পাওয়া যায়নি", 404, "USER_NOT_FOUND");
+  if (user.status === "suspended") throw new AppError("আপনার অ্যাকাউন্ট সাময়িকভাবে স্থগিত", 403, "SUSPENDED");
 
   const mockAlways = process.env.MOCK_OTP_ALWAYS_OK === "true";
   const ok = mockAlways || verifyOtp(phone, otp);
@@ -136,8 +139,9 @@ export const verifyPhoneOtp = asyncHandler(async (req: Request, res: Response) =
 export const me = asyncHandler(async (req: Request, res: Response) => {
   const id = req.authUser?.id;
   if (!id) throw new AppError("লগইন প্রয়োজন", 401, "UNAUTHORIZED");
-  const user = await User.findById(id);
+  const user = await User.findOne({ _id: id, isDeleted: false }).select("name phone email role status");
   if (!user) throw new AppError("ব্যবহারকারী পাওয়া যায়নি", 404, "USER_NOT_FOUND");
+  if (user.status === "suspended") throw new AppError("আপনার অ্যাকাউন্ট সাময়িকভাবে স্থগিত", 403, "SUSPENDED");
   res.json({
     success: true,
     data: {
